@@ -28,12 +28,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: movieApp
-          push: false
+          push: true
           tags: kennetchofo/customairflowimage:${{ github.sha}}
-      - name: Docker Image Test
-        run: |
-          docker images
-          docker run --name movieApp kennetchofo/customairflowimage:${{ github.sha}}
-          echo see logs
-          docker logs movieApp
+    
 
