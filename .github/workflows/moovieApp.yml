@@ -1,0 +1,38 @@
+name: movie_app
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  docker:
+    strategy:
+      matrix:
+        os: [ ubuntu-24.04, ubuntu-latest ]
+    name: Containerization
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: checkout Repo
+        uses: actions/checkout@v4
+      - name: Dockerhub Login
+        uses: docker/login-action@v2.2.0
+        with:
+          username: ${{ vars.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: repo_voting
+          push: false
+          tags: kennetchofo/customairflowimage:${{ github.sha}}
+      - name: Docker Image Test
+        run: |
+          docker images
+          docker run --name votingApp kennetchofo/customairflowimage:${{ github.sha}}
+          echo everything gut
+
