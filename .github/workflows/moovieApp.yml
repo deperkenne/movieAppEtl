@@ -33,6 +33,7 @@ jobs:
       - name: Docker Image Test
         run: |
           docker images
-          docker run --name votingApp kennetchofo/customairflowimage:${{ github.sha}}
-          echo everything gut
+          docker run --name movieApp kennetchofo/customairflowimage:${{ github.sha}}
+          echo see logs
+          docker logs movieApp
 
